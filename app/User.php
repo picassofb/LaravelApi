@@ -14,8 +14,15 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+    const USUARIO_VERIFICADO = '1';
+    const USUARIO_NO_VERIFICADO = '0';
+
+    const USUARIO_ADMINISTRADOR = 'true';
+    const USUARIO_REGULAR = 'false';
+
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'verified', 'verifition_token', 'admin',
     ];
 
     /**
@@ -24,6 +31,21 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'verification_token',
     ];
+
+    public function esVerificado()
+    {
+        return $this->verified == User::USUARIO_VERIFICADO;
+    }
+
+    public function esAdministrador()
+    {
+        return $this->admin == User::USUARIO_ADMINISTRADOR;
+    }
+
+    public static function generarVerificationToken()
+    {
+        return str_random(40);
+    }
 }
